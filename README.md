@@ -1,5 +1,7 @@
 # terse-js
 
+[![CI](https://github.com/RudsonCarvalho/terse-js/actions/workflows/ci.yml/badge.svg)](https://github.com/RudsonCarvalho/terse-js/actions/workflows/ci.yml)
+
 TypeScript/JavaScript implementation of the [TERSE](https://github.com/RudsonCarvalho/terse-format) format.
 
 **TERSE** (Token-Efficient Recursive Serialization Encoding) is a compact, LLM-native alternative to JSON that covers the full JSON data model with **30–55% fewer tokens**.
