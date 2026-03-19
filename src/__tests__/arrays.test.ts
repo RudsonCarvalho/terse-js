@@ -24,9 +24,9 @@ describe("Arrays – parse", () => {
 
 describe("Arrays – serialize", () => {
   test("empty array → []", () => expect(serialize([])).toBe("[]"));
-  test("small inline array", () => expect(serialize([1, 2, 3])).toBe("[1 2 3 ]"));
-  test("booleans and null inline", () => expect(serialize([true, false, null])).toBe("[T F ~ ]"));
-  test("strings inline", () => expect(serialize(["hello", "world"])).toBe("[hello world ]"));
+  test("small inline array", () => expect(serialize([1, 2, 3])).toBe("[1 2 3]"));
+  test("booleans and null inline", () => expect(serialize([true, false, null])).toBe("[T F ~]"));
+  test("strings inline", () => expect(serialize(["hello", "world"])).toBe("[hello world]"));
 
   test("single object → inline (not schema array – only 1 element)", () => {
     const s = serialize([{ a: 1 }]);

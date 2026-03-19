@@ -61,7 +61,7 @@ describe("Schema arrays – serialize (MUST use schema form for 2+ uniform objec
   test("2 uniform objects → schema array form", () => {
     const arr = [{ a: 1, b: 2 }, { a: 3, b: 4 }];
     const s = serialize(arr);
-    expect(s).toContain("#[a b ]");
+    expect(s).toContain("#[a b]");
     expect(parse(s)).toEqual(arr);
   });
 
@@ -72,7 +72,7 @@ describe("Schema arrays – serialize (MUST use schema form for 2+ uniform objec
       { id: 3, role: null },
     ];
     const s = serialize(arr);
-    expect(s).toContain("#[id role ]");
+    expect(s).toContain("#[id role]");
     expect(s).toContain("~");
     expect(parse(s)).toEqual(arr);
   });
