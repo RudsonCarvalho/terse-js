@@ -23,14 +23,14 @@ serialize(true)               // "T"
 serialize(42)                 // "42"
 serialize("hello")            // "hello"
 serialize("T")                // '"T"' (quoted — literal T)
-serialize({ a: 1, b: "hi" }) // "{a:1 b:hi}"
+serialize({ a: 1, b: "hi" }) // "{a:1 b:hi }"
 
 // Uniform arrays → schema arrays (token-efficient)
 serialize([
   { id: 1, name: "Alice", active: true },
   { id: 2, name: "Bob",   active: false },
 ])
-// "#[id name active]\n  1 Alice T\n  2 Bob F"
+// "#[id name active ]\n  1 Alice T \n  2 Bob F "
 
 // Parse a value
 parse("~")                    // null
@@ -69,9 +69,9 @@ parseDocument(src);
 | `null` | `~` |
 | `true` / `false` | `T` / `F` |
 | `"hello"` | `hello` (bare) or `"hello"` (quoted) |
-| `{"a":1}` | `{a:1}` |
-| `[1,2,3]` | `[1 2 3]` |
-| Array of uniform objects | `#[field1 field2]` schema array |
+| `{"a":1}` | `{a:1 }` |
+| `[1,2,3]` | `[1 2 3 ]` |
+| Array of uniform objects | `#[field1 field2 ]` schema array |
 
 See the [TERSE spec](https://github.com/RudsonCarvalho/terse-format) for the full grammar.
 
