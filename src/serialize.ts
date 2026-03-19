@@ -78,7 +78,7 @@ function tryInline(val: unknown, depth = 0): string | null {
     if (schemaKeys(val) !== null) return null; // schema arrays are always block
     const parts = val.map((v) => tryInline(v, depth + 1));
     if (parts.some((p) => p === null)) return null;
-    return `[${parts.join(" ")}]`;
+    return `[${parts.join(" ")} ]`;
   }
   if (isPlainObject(val)) {
     const entries = Object.entries(val);
@@ -89,7 +89,7 @@ function tryInline(val: unknown, depth = 0): string | null {
       return `${serializeKey(k)}:${vInline}`;
     });
     if (parts.some((p) => p === null)) return null;
-    return `{${parts.join(" ")}}`;
+    return `{${parts.join(" ")} }`;
   }
   return null;
 }
@@ -102,7 +102,7 @@ function serializeSchemaArray(
   depth: number,
 ): string {
   const ind = "  ".repeat(depth + 1);
-  const header = `#[${keys.map(serializeKey).join(" ")}]`;
+  const header = `#[${keys.map(serializeKey).join(" ")} ]`;
   const rows = arr.map((obj) => {
     const vals = keys.map((k) => {
       const v = obj[k];
@@ -110,7 +110,7 @@ function serializeSchemaArray(
         throw new TerseError("Schema array cell must be primitive", -1, "INVALID_VALUE");
       return serializePrimitive(v);
     });
-    return `${ind}${vals.join(" ")}`;
+    return `${ind}${vals.join(" ")} `;
   });
   return `${header}\n${rows.join("\n")}`;
 }
@@ -172,7 +172,7 @@ export function serialize(val: unknown, depth = 0): string {
     const ind = "  ".repeat(depth + 1);
     const lines = entries.map(([k, v]) => {
       const vStr = serialize(v, depth + 1);
-      return `${ind}${serializeKey(k)}: ${vStr}`;
+      return `${ind}${serializeKey(k)}:${vStr}`;
     });
     return `{\n${lines.join("\n")}\n${"  ".repeat(depth)}}`;
   }
@@ -202,7 +202,7 @@ export function serializeDocument(obj: Record<string, unknown>): string {
 
     const inline = tryInline(v);
     if (inline !== null && (key.length + 2 + inline.length) <= LINE_LIMIT) {
-      lines.push(`${key}: ${inline}`);
+      lines.push(`${key}:${inline}`);
     } else {
       // Block form: value on next line with 2-space indent
       const block = serialize(v, 1);

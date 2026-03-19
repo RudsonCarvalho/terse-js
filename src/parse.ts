@@ -63,6 +63,30 @@ class Parser {
     this.pos++;
   }
 
+  /** Returns true if current position starts a key:value pair. Does not advance pos. */
+  isKvStart(): boolean {
+    const saved = this.pos;
+    try {
+      const ch = this.cur();
+      if (ch === '"') {
+        this.parseQuotedString();
+      } else if (SAFE_START_RE.test(ch)) {
+        SAFE_ID_RE.lastIndex = this.pos;
+        const m = SAFE_ID_RE.exec(this.src);
+        if (!m) return false;
+        this.pos += m[0].length;
+      } else {
+        return false;
+      }
+      this.skipHws();
+      return this.cur() === ':';
+    } catch {
+      return false;
+    } finally {
+      this.pos = saved;
+    }
+  }
+
   // ── number ─────────────────────────────────────────────────────────────────
 
   parseNumber(): number {
@@ -272,8 +296,8 @@ class Parser {
     const fields: string[] = [];
     this.skipHws();
     while (!this.eof() && this.cur() !== "]") {
-      if (fields.length > 0) this.expect(" ");
       fields.push(this.parseKey());
+      this.skipHws();
     }
     this.expect("]");
 
@@ -286,6 +310,8 @@ class Parser {
     while (!this.eof()) {
       // Row must start at a newline
       if (this.cur() !== "\n" && this.cur() !== "\r") break;
+
+      const lineStart = this.pos; // save before consuming newline+indent
 
       // Peek ahead: skip newlines, count leading spaces
       let pi = this.pos;
@@ -305,6 +331,12 @@ class Parser {
       if (this.cur() === "/" && this.peek() === "/") {
         while (!this.eof() && this.cur() !== "\n") this.pos++;
         continue;
+      }
+
+      // Stop if this line is a KV pair (key followed by ':') — not a data row
+      if (this.isKvStart()) {
+        this.pos = lineStart; // restore to \n before this line
+        break;
       }
 
       // Parse N positional values

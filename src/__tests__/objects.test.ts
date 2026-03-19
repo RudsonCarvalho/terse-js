@@ -57,8 +57,8 @@ describe("Objects – serializeDocument / parseDocument", () => {
 
   test("serializeDocument produces key: value lines", () => {
     const doc = serializeDocument({ a: 1, b: "hello" });
-    expect(doc).toContain("a: 1");
-    expect(doc).toContain("b: hello");
+    expect(doc).toContain("a:1");
+    expect(doc).toContain("b:hello");
   });
 
   test("document duplicate key throws", () => {
